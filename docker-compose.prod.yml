@@ -1,0 +1,52 @@
+services:
+  php:
+    image: "${REGISTRY_HOST}/dockify-php"
+    ports:
+      - '8000:80'
+    networks:
+      - dockify-network
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "if [ \"$$(stat -c '%U' /app/runtime)\" != 'www-data' ] || [ \"$$(stat -c '%U' /app/web/assets)\" != 'www-data' ]; then chown -R www-data:www-data /app/runtime /app/web/assets && chmod -R ug+rwX /app/runtime /app/web/assets; fi && runuser -u www-data -- touch /app/runtime/test_write && rm /app/runtime/test_write && php -r \"try { new PDO('mysql:host=db;port=3306;dbname=${DB_NAME}', '${DB_USER}', '${DB_PASSWORD}'); exit(0);} catch (Throwable $$e) { exit(1);}\"",
+      ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  db:
+    image: mysql:8.4.11
+    platform: linux/amd64
+    environment:
+      MYSQL_USER: ${DB_USER}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - ./.docker/mysql/init-prod.sql:/docker-entrypoint-initdb.d/init.sql:cached
+      - dockify-volume:/var/lib/mysql/:cached
+    ports:
+      - "${DB_PORT}:3306"
+    networks:
+      - dockify-network
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p\"${DB_ROOT_PASSWORD}\" >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+# Networks
+networks:
+  dockify-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  dockify-volume:
+    driver: local

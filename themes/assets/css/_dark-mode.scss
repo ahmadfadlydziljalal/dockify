@@ -1,0 +1,53 @@
+/* footer logo in dark theme */
+[data-bs-theme="dark"] .footer-logo-light { display: none; }
+[data-bs-theme="dark"] .footer-logo-dark { display: inline-block; }
+
+/* login card in dark theme */
+[data-bs-theme="dark"] .login-split-card {
+    background-color: var(--bs-body-bg);
+    box-shadow: 0 0 0 1px var(--bs-border-color), 0 4px 24px rgba(0, 0, 0, .4);
+}
+
+[data-bs-theme="dark"] .login-mobile-logo {
+    filter: invert(1);
+}
+
+/* captcha visibility in dark theme */
+[data-bs-theme="dark"] .site-contact img[src*="captcha"] {
+    mix-blend-mode: screen;
+    filter: invert(1) hue-rotate(180deg);
+}
+
+/* extension cards in dark theme */
+[data-bs-theme="dark"] .extension-card {
+    background-color: var(--bs-body-bg);
+    box-shadow: 0 0 0 1px var(--bs-border-color), 0 2px 8px rgba(0, 0, 0, .3);
+}
+
+[data-bs-theme="dark"] .extension-card:hover {
+    box-shadow: 0 0 0 1px var(--bs-border-color), 0 8px 24px rgba(0, 0, 0, .4) !important;
+}
+
+/* datetimepicker in dark theme */
+[data-bs-theme="dark"] .datetimepicker {
+    thead tr:first-child th:hover,
+    tfoot th:hover,
+    table tr td.day:hover,
+    table tr td.focused,
+    table tr td span:hover,
+    table tr td span.focused {
+        background: var(--bs-tertiary-bg);
+        color: var(--bs-emphasis-color);
+    }
+}
+
+/* datepicker in dark theme */
+[data-bs-theme="dark"] .datepicker {
+    .datepicker-switch:hover,
+    .prev:hover,
+    .next:hover,
+    tfoot tr th:hover {
+        background: var(--bs-tertiary-bg);
+        color: var(--bs-emphasis-color);
+    }
+}

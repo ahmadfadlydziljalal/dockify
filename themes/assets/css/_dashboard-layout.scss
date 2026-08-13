@@ -1,0 +1,878 @@
+.dockify-layout {
+    --dockify-surface: #f7f9fd;
+    --dockify-surface-card: #ffffff;
+    --dockify-surface-soft: #eceef2;
+    --dockify-on-surface: #181c1f;
+    --dockify-on-surface-variant: #45464f;
+    --dockify-outline: #c6c5d0;
+    --dockify-outline-strong: #737687;
+    --dockify-primary: #0b1849;
+    --dockify-primary-soft: #e0e1f5;
+    --dockify-success: #063b00;
+    --dockify-danger: #b2054c;
+    --dockify-topbar-height: 64px;
+    --dockify-sidebar-width: 260px;
+    --dockify-sidebar-width-mobile: 70px;
+
+    min-height: 100vh;
+    display: flex;
+    background: var(--dockify-surface);
+    color: var(--dockify-on-surface);
+}
+
+[data-bs-theme="dark"] .dockify-layout {
+    --dockify-surface: #1f2327;
+    --dockify-surface-card: #2d3134;
+    --dockify-surface-soft: #3a4046;
+    --dockify-on-surface: #eff1f5;
+    --dockify-on-surface-variant: #c4c5d9;
+    --dockify-outline: #444656;
+    --dockify-outline-strong: #6a6d7e;
+    --dockify-primary: #b9c4fe;
+    --dockify-primary-soft: #30395f;
+    --dockify-success: #65dcd5;
+}
+
+.dockify-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--dockify-sidebar-width);
+    padding: 1.5rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-right: 1px solid var(--dockify-outline);
+    background: var(--dockify-surface-soft);
+    z-index: 1040;
+    transition: transform .2s ease-in-out;
+}
+
+.dockify-sidebar-brand {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .6rem;
+    padding: .7rem .2rem;
+    margin-bottom: .2rem;
+}
+
+.dockify-sidebar-brand > button {
+    order: 1;
+}
+
+.dockify-sidebar-brand > a {
+    order: 2;
+}
+
+.dockify-brand-link {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    text-decoration: none;
+    color: var(--dockify-on-surface);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.dockify-brand-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: .35rem;
+    background: var(--dockify-primary-soft);
+    color: var(--dockify-primary);
+    font-size: 1.1rem;
+}
+
+.dockify-sidebar-nav {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.dockify-sidebar-menu,
+.dockify-sidebar-submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dockify-sidebar-item {
+    margin-bottom: .2rem;
+}
+
+.dockify-sidebar-text {
+    flex: 1;
+}
+
+.dockify-menu-chevron {
+    font-size: .82rem;
+    opacity: .7;
+    transition: transform .15s ease-in-out;
+}
+
+.dockify-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .7rem .8rem;
+    border-radius: .4rem;
+    color: var(--dockify-on-surface-variant);
+    text-decoration: none;
+    transition: background-color .15s ease-in-out, color .15s ease-in-out;
+}
+
+.dockify-sidebar-link:hover,
+.dockify-sidebar-link:focus {
+    color: var(--dockify-on-surface);
+    background: color-mix(in srgb, var(--dockify-surface-card) 70%, transparent);
+}
+
+.dockify-sidebar-item.is-active > .dockify-sidebar-link {
+    position: relative;
+    color: var(--dockify-primary);
+    background: var(--dockify-primary-soft);
+    font-weight: 600;
+}
+
+.dockify-sidebar-item.is-active > .dockify-sidebar-link::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: .2rem;
+    height: 1.4rem;
+    border-radius: 0 .2rem .2rem 0;
+    background: var(--dockify-primary);
+}
+
+.dockify-sidebar-submenu {
+    margin-top: .3rem;
+    margin-left: 1.2rem;
+    border-left: 1px solid var(--dockify-outline);
+    padding-left: .6rem;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        max-height .26s ease,
+        opacity .18s ease,
+        visibility 0s linear .26s;
+    will-change: max-height, opacity;
+}
+
+.dockify-sidebar-submenu .dockify-sidebar-link {
+    font-size: .9rem;
+    padding: .5rem .7rem;
+}
+
+.dockify-sidebar-item.has-children.is-open > .dockify-sidebar-submenu,
+.dockify-sidebar-item.has-children.is-active > .dockify-sidebar-submenu {
+    opacity: 1;
+    visibility: visible;
+    transition:
+        max-height .26s ease,
+        opacity .2s ease,
+        visibility 0s linear 0s;
+}
+
+.dockify-sidebar-item.has-children.is-open > .dockify-sidebar-link .dockify-menu-chevron,
+.dockify-sidebar-item.has-children.is-active > .dockify-sidebar-link .dockify-menu-chevron {
+    transform: rotate(90deg);
+}
+
+.dockify-sidebar-footer {
+    border-top: 1px solid var(--dockify-outline);
+    padding-top: .8rem;
+    display: grid;
+    gap: .3rem;
+}
+
+.dockify-sidebar-backdrop {
+    display: none;
+}
+
+.dockify-main-panel {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    margin-left: var(--dockify-sidebar-width);
+    display: flex;
+    flex-direction: column;
+}
+
+.dockify-topbar {
+    position: fixed;
+    left: var(--dockify-sidebar-width);
+    right: 0;
+    top: 0;
+    height: var(--dockify-topbar-height);
+    border-bottom: 1px solid var(--dockify-outline);
+    background: color-mix(in srgb, var(--dockify-surface-card) 88%, transparent);
+    backdrop-filter: blur(8px);
+    z-index: 1030;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 1.5rem;
+}
+
+.dockify-topbar-section {
+    display: flex;
+    align-items: center;
+}
+
+.dockify-topbar-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    font-size: .75rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.dockify-topbar-breadcrumb a {
+    color: var(--dockify-on-surface-variant);
+    text-decoration: none;
+}
+
+.dockify-topbar-breadcrumb .is-current {
+    color: var(--dockify-primary);
+    font-weight: 700;
+}
+
+.dockify-topbar-search {
+    flex: 1;
+    max-width: 22rem;
+    position: relative;
+}
+
+.dockify-topbar-search input {
+    width: 100%;
+    border: 1px solid var(--dockify-outline);
+    border-radius: .4rem;
+    background: var(--dockify-surface);
+    color: var(--dockify-on-surface);
+    padding: .45rem .75rem .45rem 2rem;
+}
+
+.dockify-topbar-search input:focus {
+    outline: 0;
+    border-color: var(--dockify-primary);
+    box-shadow: 0 0 0 .2rem color-mix(in srgb, var(--dockify-primary) 30%, transparent);
+}
+
+.dockify-topbar-search::before {
+    content: '';
+    position: absolute;
+    left: .7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='7' cy='7' r='4.5'/%3E%3Cpath d='M14 14l-3.5-3.5'/%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+    pointer-events: none;
+    color: var(--dockify-on-surface-variant);
+}
+
+.dockify-search-toggle {
+    display: none;
+}
+
+.dockify-topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+.dockify-icon-button {
+    width: 2.2rem;
+    height: 2.2rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--dockify-on-surface-variant);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color .15s ease-in-out, color .15s ease-in-out;
+}
+
+.dockify-icon-button:hover,
+.dockify-icon-button:focus {
+    background: color-mix(in srgb, var(--dockify-surface-soft) 70%, transparent);
+    color: var(--dockify-primary);
+}
+
+.dockify-profile-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--dockify-outline);
+    background: var(--dockify-surface-soft);
+    color: var(--dockify-primary);
+    font-weight: 700;
+}
+
+.dockify-profile-avatar-button {
+    display: inline-flex !important;
+}
+
+.dockify-profile-dropdown {
+    min-width: 280px;
+    border: 1px solid var(--dockify-outline);
+    border-radius: .5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+    padding: 0;
+}
+
+.dockify-profile-dropdown-header {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+.dockify-profile-dropdown-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid var(--dockify-primary-soft);
+}
+
+.dockify-profile-dropdown-info {
+    text-align: left;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dockify-profile-username {
+    font-weight: 600;
+    color: var(--dockify-on-surface);
+    line-height: 1.3;
+}
+
+.dockify-profile-nickname {
+    font-size: .875rem;
+    color: var(--dockify-on-surface-variant);
+    line-height: 1.3;
+}
+
+.dockify-profile-dropdown .dropdown-item {
+    padding: .6rem 1rem;
+    color: var(--dockify-on-surface);
+    transition: all .2s ease;
+}
+
+.dockify-profile-dropdown .dropdown-item:hover,
+.dockify-profile-dropdown .dropdown-item:focus {
+    background-color: var(--dockify-primary-soft);
+    color: var(--dockify-primary);
+    font-weight: 500;
+    transform: translateX(4px);
+}
+
+.dockify-profile-dropdown .dropdown-item.text-danger:hover,
+.dockify-profile-dropdown .dropdown-item.text-danger:focus {
+    background-color: rgba(220, 53, 69, .1);
+    color: #dc3545;
+}
+
+.dockify-profile-dropdown .dropdown-submenu {
+    position: relative;
+}
+
+.dockify-profile-dropdown .dropdown-submenu .dropdown-toggle::after {
+    transform: rotate(-90deg);
+    float: right;
+}
+
+.dockify-profile-dropdown .dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-left: .1rem;
+    margin-top: -1px;
+}
+
+.dockify-profile-dropdown .dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dockify-profile-dropdown .dropdown-submenu > .dropdown-toggle:after {
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-left: 0;
+    border-bottom: 0;
+    content: " ";
+}
+
+.dockify-profile-dropdown .dropdown-submenu .dropdown-toggle:hover,
+.dockify-profile-dropdown .dropdown-submenu .dropdown-toggle:focus,
+.dockify-profile-dropdown .dropdown-submenu .dropdown-menu .dropdown-item:hover,
+.dockify-profile-dropdown .dropdown-submenu .dropdown-menu .dropdown-item:focus {
+    background-color: var(--dockify-primary-soft);
+    color: var(--dockify-primary);
+}
+
+.dockify-profile-dropdown .dropdown-submenu .dropdown-menu .dropdown-item:hover,
+.dockify-profile-dropdown .dropdown-submenu .dropdown-menu .dropdown-item:focus {
+    font-weight: 500;
+    transform: translateX(4px);
+}
+
+.dockify-topbar-search input {
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.dockify-topbar-search:focus-within input {
+    border-color: var(--dockify-primary);
+    box-shadow:
+        0 0 0 .24rem color-mix(in srgb, var(--dockify-primary) 30%, transparent),
+        0 0 1rem color-mix(in srgb, var(--dockify-primary) 24%, transparent);
+}
+
+.dockify-search-suggestions {
+    position: absolute;
+    top: calc(100% + .35rem);
+    left: 0;
+    right: 0;
+    z-index: 1090;
+    background: var(--dockify-surface);
+    border: 1px solid var(--dockify-outline);
+    border-radius: .45rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .08);
+    max-height: 18rem;
+    overflow-y: auto;
+    padding: .35rem 0;
+}
+
+.dockify-search-suggestions.d-none {
+    display: none !important;
+}
+
+.dockify-search-group {
+    padding: .3rem .75rem;
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--dockify-on-surface-variant);
+}
+
+.dockify-search-item {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    padding: .45rem .75rem;
+    color: var(--dockify-on-surface);
+}
+
+.dockify-search-item:hover,
+.dockify-search-item:focus,
+.dockify-search-item.is-active {
+    background: var(--dockify-primary-soft);
+    color: var(--dockify-primary);
+    outline: none;
+}
+
+.dockify-content {
+    flex: 1;
+    padding-top: calc(var(--dockify-topbar-height) + 1.25rem);
+    padding-bottom: 1.25rem;
+}
+
+.dockify-content-inner {
+    padding: 0 1.5rem;
+}
+
+.dockify-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .35rem;
+    font-size: .75rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.dockify-breadcrumb li {
+    color: var(--dockify-on-surface-variant);
+}
+
+.dockify-breadcrumb li + li::before {
+    content: "›";
+    margin-right: .35rem;
+    color: var(--dockify-outline-strong);
+}
+
+.dockify-breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.dockify-breadcrumb .active {
+    color: var(--dockify-primary);
+    font-weight: 700;
+}
+
+.dockify-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--dockify-outline);
+    color: var(--dockify-on-surface-variant);
+    padding: .75rem 1.5rem;
+}
+
+@media (min-width: 992px) {
+    .dockify-sidebar-collapsed .dockify-sidebar {
+        width: var(--dockify-sidebar-width-mobile);
+        padding-left: .6rem;
+        padding-right: .6rem;
+    }
+
+    .dockify-sidebar-collapsed .dockify-main-panel {
+        margin-left: var(--dockify-sidebar-width-mobile);
+    }
+
+    .dockify-sidebar-collapsed .dockify-topbar {
+        left: var(--dockify-sidebar-width-mobile);
+    }
+
+    .dockify-sidebar-collapsed .dockify-sidebar-brand {
+        justify-content: center;
+        padding: .7rem .8rem;
+        gap: 0;
+    }
+
+    .dockify-sidebar-collapsed .dockify-brand-link {
+        display: none;
+    }
+
+    .dockify-sidebar-collapsed .dockify-sidebar-text,
+    .dockify-sidebar-collapsed .dockify-menu-chevron {
+        display: none;
+    }
+
+    .dockify-sidebar-collapsed .dockify-sidebar-link {
+        justify-content: center;
+        padding-inline: .5rem;
+    }
+
+    .dockify-sidebar-collapsed .dockify-sidebar-link i {
+        margin: 0 !important;
+        font-size: 1.1rem;
+    }
+
+    .dockify-sidebar-collapsed .dockify-sidebar-submenu {
+        display: none !important;
+    }
+
+    .dockify-sidebar-collapsed .dockify-sidebar-footer .dockify-sidebar-footer-label {
+        display: none;
+    }
+
+    .dockify-sidebar-collapsed .dockify-sidebar-footer .dockify-sidebar-link {
+        justify-content: center;
+        padding-inline: .5rem;
+    }
+
+    .dockify-sidebar-collapsed .dockify-sidebar-footer .dockify-sidebar-link i {
+        margin: 0 !important;
+        font-size: 1.1rem;
+    }
+
+    .dockify-sidebar-collapsed .dockify-sidebar-item.is-active > .dockify-sidebar-link::before {
+        left: -.6rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .dockify-sidebar {
+        width: var(--dockify-sidebar-width-mobile);
+        padding-left: .6rem;
+        padding-right: .6rem;
+
+        .dockify-sidebar-brand {
+            padding: .7rem;
+        }
+    }
+
+    .dockify-brand-link span:last-child,
+    .dockify-sidebar-link {
+        font-size: 0;
+    }
+
+    .dockify-sidebar-link i {
+        margin: 0 !important;
+        font-size: 1.1rem;
+    }
+
+    .dockify-sidebar-submenu,
+    .dockify-sidebar-footer {
+        display: none;
+    }
+
+    .dockify-main-panel {
+        margin-left: var(--dockify-sidebar-width-mobile);
+    }
+
+    .dockify-topbar {
+        left: var(--dockify-sidebar-width-mobile);
+    }
+
+    .dockify-topbar-breadcrumb {
+        display: none;
+    }
+
+    .dockify-topbar-search {
+        display: block !important;
+    }
+
+    .dockify-content-inner {
+        padding-inline: .9rem;
+    }
+
+    .dockify-sidebar-backdrop {
+        display: none;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .dockify-sidebar {
+        width: var(--dockify-sidebar-width);
+        transform: translateX(-100%);
+        padding-inline: 1rem;
+    }
+
+    .dockify-brand-link span:last-child,
+    .dockify-sidebar-link {
+        font-size: inherit;
+    }
+
+    .dockify-sidebar-link i {
+        margin-right: .5rem !important;
+    }
+
+    .dockify-sidebar-submenu,
+    .dockify-sidebar-footer {
+        display: block;
+    }
+
+    .dockify-main-panel {
+        margin-left: 0;
+    }
+
+    .dockify-topbar {
+        left: 0;
+        display: flex;
+        gap: 0;
+    }
+
+    .dockify-topbar-section {
+        flex: 0;
+        order: 0;
+    }
+
+    .dockify-topbar-search {
+        flex: none;
+        max-width: none;
+        width: auto;
+        display: flex !important;
+        order: 1;
+        margin-left: auto;
+    }
+
+    .dockify-topbar-actions {
+        order: 2;
+    }
+
+    .dockify-topbar-search::before {
+        display: none;
+    }
+
+    .dockify-topbar-search input {
+        display: none;
+    }
+
+    .dockify-topbar-search.dockify-search-expanded {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        max-width: 100%;
+        width: 100%;
+        padding: .5rem;
+        background: var(--dockify-surface-soft);
+        border-top: 1px solid var(--dockify-outline);
+        border-bottom: 1px solid var(--dockify-outline);
+        order: initial;
+    }
+
+    .dockify-topbar-search.dockify-search-expanded input {
+        display: block;
+        width: 100%;
+    }
+
+    .dockify-topbar-search.dockify-search-expanded .dockify-search-toggle {
+        position: absolute;
+        right: 1rem;
+        top: 1.25rem;
+        z-index: 10;
+    }
+
+    .dockify-search-toggle {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border: none;
+        background: transparent;
+        color: var(--dockify-on-surface);
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: color .2s ease;
+    }
+
+    .dockify-search-toggle:hover {
+        color: var(--dockify-primary);
+    }
+
+    .dockify-sidebar-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .45);
+        border: 0;
+        z-index: 1035;
+    }
+
+    .dockify-sidebar-open .dockify-sidebar {
+        transform: translateX(0);
+    }
+
+    .dockify-sidebar-open .dockify-sidebar-backdrop {
+        display: block;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .dockify-sidebar {
+        width: var(--dockify-sidebar-width-mobile);
+        padding-left: .6rem;
+        padding-right: .6rem;
+        transition: width .2s ease-in-out;
+    }
+
+    .dockify-brand-link span:last-child,
+    .dockify-sidebar-link {
+        font-size: 0;
+    }
+
+    .dockify-sidebar-link i {
+        margin: 0 !important;
+        font-size: 1.1rem;
+    }
+
+    .dockify-sidebar-footer-label {
+        font-size: 0;
+    }
+
+    .dockify-sidebar-footer {
+        display: block;
+        border-top: 1px solid var(--dockify-outline);
+        padding-top: .5rem;
+        margin-top: auto;
+    }
+
+    .dockify-sidebar-footer .dockify-sidebar-link {
+        justify-content: center;
+        padding-inline: .5rem;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        font-size: inherit;
+    }
+
+    .dockify-sidebar-submenu {
+        display: none;
+    }
+
+    .dockify-main-panel {
+        margin-left: var(--dockify-sidebar-width-mobile);
+        transition: margin-left .2s ease-in-out;
+    }
+
+    .dockify-topbar {
+        left: var(--dockify-sidebar-width-mobile);
+        transition: left .2s ease-in-out;
+    }
+
+    .dockify-topbar-breadcrumb,
+    .dockify-topbar-search {
+        display: none;
+    }
+
+    .dockify-content-inner {
+        padding-inline: .9rem;
+    }
+
+    .dockify-sidebar-backdrop {
+        display: none;
+    }
+
+    /* iPad expand state */
+    .dockify-sidebar-open .dockify-sidebar {
+        width: var(--dockify-sidebar-width);
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .dockify-sidebar-open .dockify-sidebar-brand {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: .7rem;
+        gap: .6rem;
+    }
+
+    .dockify-sidebar-open .dockify-brand-link span:last-child,
+    .dockify-sidebar-open .dockify-sidebar-link {
+        font-size: inherit;
+    }
+
+    .dockify-sidebar-open .dockify-sidebar-footer-label {
+        font-size: inherit;
+    }
+
+    .dockify-sidebar-open .dockify-sidebar-link i {
+        margin-right: .5rem !important;
+    }
+
+    .dockify-sidebar-open .dockify-sidebar-submenu,
+    .dockify-sidebar-open .dockify-sidebar-footer {
+        display: block;
+    }
+
+    .dockify-sidebar-open .dockify-main-panel {
+        margin-left: var(--dockify-sidebar-width);
+    }
+
+    .dockify-sidebar-open .dockify-topbar {
+        left: var(--dockify-sidebar-width);
+    }
+}

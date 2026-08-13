@@ -1,0 +1,54 @@
+@import "variables";
+
+// table styles
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  color: #212529;
+
+  th, td {
+    padding: 0.5rem;
+    vertical-align: top;
+  }
+
+  &.table-bordered {
+    th, td {
+      border: 1px solid black;
+    }
+  }
+
+  &.table-borderless {
+    th, td {
+      border: none;
+    }
+  }
+
+}
+
+
+// Yii2 DetailView uses table class "table" by default
+.table {
+  &.detail-view {
+    tbody {
+      tr {
+        th, td {
+          text-align: left;
+          vertical-align: top;
+          border: 1px solid black;
+        }
+
+        th {
+          padding: 0.5rem;
+          border: 1px solid black;
+          width: 25%;
+          background-color: red; // for debugging
+        }
+
+        td {
+
+        }
+      }
+    }
+  }
+}
