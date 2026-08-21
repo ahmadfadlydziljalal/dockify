@@ -18,7 +18,7 @@ use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 if (isset($_COOKIE['CODECEPTION_CODECOVERAGE'])) {
     $cookie = json_decode($_COOKIE['CODECEPTION_CODECOVERAGE'], true);
 
-    // fix for improperly encoded JSON in the Code Coverage cookie with WebDriver.
+    // fix for improperly encoded JSON in Code Coverage cookie with WebDriver.
     // @see https://github.com/Codeception/Codeception/issues/874
     if (!is_array($cookie)) {
         $cookie = json_decode($cookie, true);

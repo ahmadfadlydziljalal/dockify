@@ -1,6 +1,11 @@
 # Dockify Starter Kit
 
 Dockify adalah starter kit Yii 2 yang sudah dipaketkan dengan Docker untuk development, testing, dan build asset.
+Anda bisa menginstal starter kit ini menggunakan perintah berikut:
+
+~~~
+composer create-project --prefer-dist ahmadfadlydziljalal/dockify .
+~~~
 
 ## Stack
 
@@ -12,7 +17,7 @@ Dockify adalah starter kit Yii 2 yang sudah dipaketkan dengan Docker untuk devel
 ## Quick start
 
 - Siapkan file environment `.env` lalu sesuaikan value yang dibutuhkan. 
-- Sesuaikan nama database di sql file di direktori `.docker/mysql/*.sql` bila ingin memakai nama database berbeda.
+- Sesuaikan nama database di sql file di direktori `.docker/mysql/*.sql` dengan `.env` pada section `DB` itu harus sama.
 - Build dan jalankan container:
 
 1. Install dependency PHP dan migration di dalam container php,
@@ -21,8 +26,8 @@ Dockify adalah starter kit Yii 2 yang sudah dipaketkan dengan Docker untuk devel
 
 
 ```bash
-docker compose run --rm php sh -c "composer install && yii migrate-support && yii migrate && tests/Support/bin/yii migrate" && \
 docker compose run --rm gulp npm install && \
+docker compose run --rm php sh -c "yii migrate-support && yii migrate && tests/Support/bin/yii migrate" && \
 docker compose up -d
 ```
 
