@@ -14,5 +14,8 @@ COPY .docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Set working directory
 WORKDIR /app
 
+# Copy source code aplikasi ke image (dibutuhkan di production tanpa bind mount)
+COPY . /app
+
 # Jalankan supervisord sebagai ENTRYPOINT / CMD utama
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
